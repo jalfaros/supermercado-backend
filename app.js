@@ -20,10 +20,13 @@ app.use((req, res, next) => {
     next();
 });
 
+// Importaciones de los los controladores 
 
-app.get('/', ( req, res ) => {
-    res.send('Backend is working...')
-});
+const CatalogueController = require('./routes/controllers/CatalogueController.js')
+
+
+
+app.use('/products', CatalogueController)
 
 
 
