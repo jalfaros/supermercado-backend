@@ -23,10 +23,12 @@ app.use((req, res, next) => {
 // Importaciones de los los controladores 
 
 const CatalogueController = require('./routes/controllers/CatalogueController.js')
+const ProductsCatalogue = require('./routes/controllers/ProductsCatalogue')
 
 
 
 app.use('/products', CatalogueController)
+app.use('/productsCatalogue', ProductsCatalogue)
 
 
 
