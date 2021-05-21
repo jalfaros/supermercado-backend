@@ -27,8 +27,8 @@ const ProductsCatalogue = require('./routes/controllers/ProductsCatalogue')
 
 
 
-app.use('/products', CatalogueController)
-app.use('/productsCatalogue', ProductsCatalogue)
+app.use('/catalogues', CatalogueController)
+app.use('/products', ProductsCatalogue)
 
 
 

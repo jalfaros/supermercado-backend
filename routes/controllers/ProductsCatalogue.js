@@ -3,17 +3,25 @@ const router = express.Router();
 const httpStatus = require('http-status');
 const firebase = require('firebase-admin');
 
-router.post('/createNewProduct', (req, res) => {
+
+
+// Faltan agregar los demás datos
+
+router.post('/newProduct', (req, res) => {
 
     try {
+
         var db = firebase.firestore();
-        const catalogueID = req.body.catalogueID;
-        const productName = req.body.productName;
-        const imgURL = req.body.imgURL;
-        const tag = req.body.tag;
+        
+        const catalogueID   = req.body.catalogueID;
+        const productName   = req.body.productName;
+        const imgURL        = req.body.imgURL;
+        const tag           = req.body.tag;
 
+        console.log( req.body )
 
-        db.collection('catalogues').doc(catalogueID).update({
+        db.collection('catalogues').doc( catalogueID ).update({
+
             products: firebase.firestore.FieldValue.arrayUnion({
                 product_name: productName,
                 imgUrl : imgURL,
@@ -24,16 +32,18 @@ router.post('/createNewProduct', (req, res) => {
             })
 
         }).then( response => {
-            res.status(httpStatus.OK).json({success:true});
+            res.status(httpStatus.OK).json( { response , success:true});
         }).catch( err => {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error:err + '',success:false});
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + '', success:false });
         });
         
     } catch (error) {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({error:error + '', success:false});        
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: error + '', success:false });        
     };
 
 });
+
+
 
 module.exports = router;
 
