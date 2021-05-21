@@ -44,8 +44,8 @@ router.delete('/deleteCatalogue', async(req, res) => {
     try{
         var db = firebase.firestore();
 
-        await db.collection('catalogues').doc( idCatalogue ).delete().then( () => {
-            res.status( httpstatus.OK ).json({ success: true })
+        await db.collection('catalogues').doc( idCatalogue ).delete().then( ( response ) => {
+            res.status( httpstatus.OK ).json({  response, success: true })
         }).catch( error => {
             res.status(httpstatus.INTERNAL_SERVER_ERROR).json({ error: error + ' ', success: false })
         });

@@ -18,8 +18,7 @@ router.post('/newProduct', (req, res) => {
         const imgURL        = req.body.imgURL;
         const tag           = req.body.tag;
 
-        console.log( req.body )
-
+        
         db.collection('catalogues').doc( catalogueID ).update({
 
             products: firebase.firestore.FieldValue.arrayUnion({
