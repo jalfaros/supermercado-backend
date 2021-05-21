@@ -7,7 +7,7 @@ const firebase = require('firebase-admin');
 // Post, Update --> req.body
 // get... --> req.query
 
-router.post('/createNewCatalogue', ( req, res ) => {
+router.post('/newCatalogue', ( req, res ) => {
 
     const catalogueName = req.body.catalogueName;
     const createdBy = parseInt( req.body.createdBy );
