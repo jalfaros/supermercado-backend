@@ -34,34 +34,25 @@ router.post('/createNewCatalogue', ( req, res ) => {
     }
 })
 
-router.delete('/test', ( req, res ) => {
-    try{
-        res.status( httpstatus.OK ).json({ success: true })
-    }catch(err){
-        return err;
-    }
-});
+
+
 
 router.delete('/deleteCatalogue', async(req, res) => {
+    
     const idCatalogue = req.query.idCatalogue;
-    console.log(idCatalogue, 'Aquiiiiiiii');
 
     try{
         var db = firebase.firestore();
 
-        await db.collection('catalogues').doc( idCatalogue ).delete().then( response => {
-            console.log(response);
+        await db.collection('catalogues').doc( idCatalogue ).delete().then( () => {
             res.status( httpstatus.OK ).json({ success: true })
         }).catch( error => {
-            res.status(httpstatus.INTERNAL_SERVER_ERROR).json({ error, success: false })
+            res.status(httpstatus.INTERNAL_SERVER_ERROR).json({ error: error + ' ', success: false })
         });
 
     }catch( error ){
-        res.status(httpstatus.INTERNAL_SERVER_ERROR).json({ error: error + ' ', success: false })
+        res.status( httpstatus.INTERNAL_SERVER_ERROR ).json({ error: error + ' ', success: false })
     }
-})
-
-
-
+});
 
 module.exports = router;
