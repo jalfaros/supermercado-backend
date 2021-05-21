@@ -7,7 +7,7 @@ const firebase = require('firebase-admin');
 // Post, Update --> req.body
 // get... --> req.query
 
-router.post('/createNewCatalogue', ( req, res ) => {
+router.post('/newCatalogue', ( req, res ) => {
 
     const catalogueName = req.body.catalogueName;
     const createdBy = parseInt( req.body.createdBy );
@@ -36,5 +36,23 @@ router.post('/createNewCatalogue', ( req, res ) => {
 
 
 
+
+router.delete('/deleteCatalogue', async(req, res) => {
+    
+    const idCatalogue = req.query.idCatalogue;
+
+    try{
+        var db = firebase.firestore();
+
+        await db.collection('catalogues').doc( idCatalogue ).delete().then( ( response ) => {
+            res.status( httpstatus.OK ).json({  response, success: true })
+        }).catch( error => {
+            res.status(httpstatus.INTERNAL_SERVER_ERROR).json({ error: error + ' ', success: false })
+        });
+
+    }catch( error ){
+        res.status( httpstatus.INTERNAL_SERVER_ERROR ).json({ error: error + ' ', success: false })
+    }
+});
 
 module.exports = router;

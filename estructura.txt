@@ -1,0 +1,32 @@
+Carnes
+Arrroz -> Tio Pelón
+Frijo
+
+-------------------------------------
+granos básicos (arroz, frijoles)
+bebidas
+carnes
+
+[x,x,x,x,x,x,x,x,x,x,x]
+
+
+
+catalogue
+	catalogue_name,
+	created_by,
+	createdAt,
+	products = [ product, product, product, product ]
+
+	
+
+product
+	nombre, 
+	imgurl, 
+	etiqueta, 
+	timestamp,
+	peso?,
+	descripción -> Pepsi 1L,
+	precio_estimado, 
+	
+
+
