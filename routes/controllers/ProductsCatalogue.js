@@ -5,44 +5,57 @@ const firebase = require('firebase-admin');
 
 
 
-// Faltan agregar los demás datos
 
 router.post('/newProduct', (req, res) => {
 
     try {
 
         var db = firebase.firestore();
-        
-        const catalogueID   = req.body.catalogueID;
-        const productName   = req.body.productName;
-        const imgURL        = req.body.imgURL;
-        const tag           = req.body.tag;
 
-        
-        db.collection('catalogues').doc( catalogueID ).update({
+        const productName = req.body.productName;
+        const description = req.body.description;
+        const imgURL = req.body.imgURL;
+        const estimatedCost = req.body.estimatedCost;
+        const tag = req.body.tag;
 
-            products: firebase.firestore.FieldValue.arrayUnion({
-                product_name: productName,
-                imgUrl : imgURL,
-                tag : tag,
-                weight: '1kg',
-                description: 'abc',
-                stimated_cost: 2000
-            })
-
-        }).then( response => {
-            res.status(httpStatus.OK).json( { response , success:true});
-        }).catch( err => {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + '', success:false });
+        db.collection('products').add({
+            product_name: productName,
+            description: description,
+            img_url: imgURL,
+            estimatedCost: estimatedCost,
+            tag: tag
+        }).then(response => {
+            res.status(httpStatus.OK).json({ idProduct: response.id, success: true });
+        }).catch(err => {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + '', success: false });
         });
-        
+
     } catch (error) {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: error + '', success:false });        
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: error + '', success: false });
     };
 
 });
 
 
+router.delete('/deleteProduct', async (req, res) => {
+    try {
+
+        const productId = req.body.productId;
+
+        var db = firebase.firestore();
+        await db.collection('products').doc( productId ).delete().then( response => {
+            res.status( httpStatus.OK ).json({ response: response, success: true })
+        }).catch( err => {
+            res.status( httpStatus.INTERNAL_SERVER_ERROR ).json( { error: err + ' ', success: false } )
+        })
+
+    } catch (err) {
+        res.status( httpStatus.INTERNAL_SERVER_ERROR ).json({ error: err + ' ', success: false })
+    }
+})
+
+
+
+
 
 module.exports = router;
-
