@@ -20,16 +20,30 @@ app.use((req, res, next) => {
   next();
 });
 
+
+//Firebase
+const firebase = require('firebase-admin');
+const serviceAccount = require('./supermarket-49415-firebase-adminsdk-lzhtv-069b3d1f49.json')
+
+firebase.initializeApp({
+  credential: firebase.credential.cert( serviceAccount ),
+  storageBucket: 'gs://supermarket-49415.appspot.com/'
+});
+
+
+
 // Importaciones de los los controladores 
 
-const CatalogueController = require('./routes/controllers/CatalogueController.js')
+const CatalogueController = require('./routes/controllers/CatalogueController')
 const PoductsController = require('./routes/controllers/ProductsCatalogue')
 const MarketsController = require('./routes/controllers/MarketController')
 
+const fileUploaderController = require('./routes/controllers/FIleUploaderController');
 
 app.use('/catalogues', CatalogueController)
 app.use('/products', PoductsController)
 app.use('/markets', MarketsController)
+app.use('/test', fileUploaderController)
 
 
 module.exports = app;

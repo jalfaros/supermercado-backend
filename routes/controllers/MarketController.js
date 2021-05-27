@@ -13,17 +13,17 @@ router.get('/getMarkets', async (req, res) => {
         var db = firebase.firestore();
         const userMarkets = [];
 
-        await db.collection('markets').get().then(response => {
+        marketsRef = await db.collection('markets').get()
 
-            counter = 0;
-            response.forEach( (snapshot) => {
-                if (snapshot.data()['createdBy'] === userId) {
-                    userMarkets.push(snapshot.data());
-                    userMarkets[counter]['documentId'] = snapshot.id;
-                }
+        counter = 0;
+        await marketsRef.forEach( snapshot => {
+            if( snapshot.data()['createdBy'] === userId ){
+                userMarkets.push( snapshot.data() );
+                userMarkets[counter]['documentId'] = snapshot.id;
                 counter ++;
-            })
+            }
         });
+        
         res.status(httpStatus.OK).json({ data: userMarkets, success: true })
 
     } catch (err) {
