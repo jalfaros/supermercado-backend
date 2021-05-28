@@ -4,7 +4,7 @@
   "description": "Supermarket",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "Jose Ignacio",
   "license": "ISC",
