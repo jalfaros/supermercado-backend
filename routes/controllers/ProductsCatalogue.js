@@ -12,11 +12,11 @@ router.post('/newProduct', (req, res) => {
 
         var db = firebase.firestore();
 
-        const productName = req.body.productName;
-        const description = req.body.description;
-        const imgURL = req.body.imgURL;
-        const estimatedCost = req.body.estimatedCost;
-        const tag = req.body.tag;
+        const productName           = req.body.productName;
+        const description           = req.body.description;
+        const imgURL                = req.body.imgURL;
+        const estimatedCost         = req.body.estimatedCost;
+        const tag                   = req.body.tag;
 
         db.collection('products').add({
             product_name: productName,
