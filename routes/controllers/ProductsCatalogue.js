@@ -14,12 +14,12 @@ router.post('/newProduct', (req, res) => {
 
         const productName           = req.body.productName;
         const description           = req.body.description;
-        const imgURL                = req.body.imgURL;
+        const imgURL                = req.body.url;
         const estimatedCost         = req.body.estimatedCost;
         const tag                   = req.body.tag;
 
         db.collection('products').add({
-            product_name: productName,
+            product_name: productName,  
             description: description,
             img_url: imgURL,
             estimatedCost: estimatedCost,
