@@ -38,12 +38,11 @@ const CatalogueController = require('./routes/controllers/CatalogueController')
 const PoductsController = require('./routes/controllers/ProductsCatalogue')
 const MarketsController = require('./routes/controllers/MarketController')
 
-const fileUploaderController = require('./routes/controllers/FIleUploaderController');
 
 app.use('/catalogues', CatalogueController)
 app.use('/products', PoductsController)
 app.use('/markets', MarketsController)
-app.use('/test', fileUploaderController)
+
 
 
 module.exports = app;

@@ -6,20 +6,38 @@ const firebase = require('firebase-admin');
 
 
 
+router.get('/getProducts', async (req, res) => {
+
+    try {
+
+        var db = firebase.firestore();
+        productsRef = await db.collection('products').get();
+        const products = []
+        productsRef.forEach(snapshot => {
+            products.push(snapshot.data())
+        });
+        res.status(httpStatus.OK).json({ productsList: products, success: true })
+    } catch (err) {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + ' ', success: false })
+    }
+})
+
+
+
 router.post('/newProduct', (req, res) => {
 
     try {
 
         var db = firebase.firestore();
 
-        const productName           = req.body.productName;
-        const description           = req.body.description;
-        const imgURL                = req.body.url;
-        const estimatedCost         = req.body.estimatedCost;
-        const tag                   = req.body.tag;
+        const productName = req.body.productName;
+        const description = req.body.description;
+        const imgURL = req.body.url;
+        const estimatedCost = req.body.estimatedCost;
+        const tag = req.body.tag;
 
         db.collection('products').add({
-            product_name: productName,  
+            product_name: productName,
             description: description,
             img_url: imgURL,
             estimatedCost: estimatedCost,
@@ -43,14 +61,14 @@ router.delete('/deleteProduct', async (req, res) => {
         const productId = req.body.productId;
 
         var db = firebase.firestore();
-        await db.collection('products').doc( productId ).delete().then( response => {
-            res.status( httpStatus.OK ).json({ response: response, success: true })
-        }).catch( err => {
-            res.status( httpStatus.INTERNAL_SERVER_ERROR ).json( { error: err + ' ', success: false } )
+        await db.collection('products').doc(productId).delete().then(response => {
+            res.status(httpStatus.OK).json({ response: response, success: true })
+        }).catch(err => {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + ' ', success: false })
         })
 
     } catch (err) {
-        res.status( httpStatus.INTERNAL_SERVER_ERROR ).json({ error: err + ' ', success: false })
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + ' ', success: false })
     }
 })
 
