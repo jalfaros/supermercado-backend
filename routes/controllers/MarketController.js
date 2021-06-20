@@ -59,25 +59,6 @@ router.post('/newMarket', async (req, res) => {
     }
 })
 
-// {
-//     const userId = req.query.uid;
-//     var db = firebase.firestore();
-//     const userMarkets = [];
-
-//     marketsRef = await db.collection('markets').get()
-
-//     counter = 0;
-//     await marketsRef.forEach( snapshot => {
-//         if( snapshot.data()['createdBy'] === userId ){
-//             userMarkets.push( snapshot.data() );
-//             userMarkets[counter]['documentId'] = snapshot.id;
-//             counter ++;
-//         }
-//     });
-    
-//     res.status(httpStatus.OK).json({ data: userMarkets, success: true })
-
-// } 
 router.get('/getMarketForId', async(req, res) => {
     try{
         const idMarket = req.query.idMarket;
@@ -92,6 +73,52 @@ router.get('/getMarketForId', async(req, res) => {
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({error , success: false });
     }
 })
+
+
+router.post('/newListProductsMarket', async (req, res) => {
+    try{
+        const listProductsName = req.body.listProductsName;
+
+        var db = firebase.firestore();
+
+        await db.collection('productsMarket').add({
+            listMarketName: listProductsName,
+            products: []
+        }).then(response => {
+            res.status(httpStatus.OK).json({ idListProduct: response.id, success: true});
+        }).catch(error => {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error, success: false });
+        })
+
+    }catch(err){
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ err, success: false});
+    }
+});
+
+router.post('/addIdListProductsToMarket', async (req, res) => {
+    try{
+        const idList = req.body.idList;
+        const idMarket = req.body.idMarket;
+
+        'falta buscar el mercado por el id del usuario'
+
+        var db = firebase.firestore();
+
+        const admin = require('firebase-admin');
+
+        db.collection('markets').doc(idMarket).update({
+            catalogues: admin.firestore.FieldValue.arrayUnion(idList)
+        }).then(response => {
+            res.status(httpStatus.OK).json({ success: true});
+
+        }).catch(error =>{
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error, super: false})
+        })
+        
+    }catch(error){
+
+    }
+});
 
 
 module.exports = router;
