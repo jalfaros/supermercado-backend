@@ -4,9 +4,6 @@ const httpstatus = require('http-status');
 const firebase = require('firebase-admin');
 
 
-// Post, Update --> req.body
-// get... --> req.query
-
 router.post('/newCatalogue', ( req, res ) => {
 
     const catalogueName = req.body.catalogueName;
@@ -54,5 +51,6 @@ router.delete('/deleteCatalogue', async(req, res) => {
         res.status( httpstatus.INTERNAL_SERVER_ERROR ).json({ error: error + ' ', success: false })
     }
 });
+
 
 module.exports = router;

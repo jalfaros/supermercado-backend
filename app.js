@@ -11,24 +11,37 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials"
-      );    
-    res.header("Access-Control-Allow-Methods", "DELETE, GET, POST, PUT");
-    next();
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials"
+  );
+  res.header("Access-Control-Allow-Methods", "DELETE, GET, POST, PUT");
+  next();
 });
+
+
+//Firebase
+const firebase = require('firebase-admin');
+const serviceAccount = require('./supermarket-49415-firebase-adminsdk-lzhtv-069b3d1f49.json')
+
+firebase.initializeApp({
+  credential: firebase.credential.cert( serviceAccount ),
+  storageBucket: 'gs://supermarket-49415.appspot.com/'
+});
+
+
 
 // Importaciones de los los controladores 
 
-const CatalogueController = require('./routes/controllers/CatalogueController.js')
-const ProductsCatalogue = require('./routes/controllers/ProductsCatalogue')
-
+const CatalogueController = require('./routes/controllers/CatalogueController')
+const PoductsController = require('./routes/controllers/ProductsCatalogue')
+const MarketsController = require('./routes/controllers/MarketController')
 
 
 app.use('/catalogues', CatalogueController)
-app.use('/products', ProductsCatalogue)
+app.use('/products', PoductsController)
+app.use('/markets', MarketsController)
 
 
 
