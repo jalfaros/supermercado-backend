@@ -13,8 +13,11 @@ router.get('/getProducts', async (req, res) => {
         var db = firebase.firestore();
         productsRef = await db.collection('products').get();
         const products = []
-        productsRef.forEach(snapshot => {
+        index = 0;
+        productsRef.forEach((snapshot) => {
             products.push(snapshot.data())
+            products[index]['productId'] = snapshot.id;
+            index++;
         });
         res.status(httpStatus.OK).json({ productsList: products, success: true })
     } catch (err) {
@@ -55,11 +58,10 @@ router.post('/newProduct', (req, res) => {
 });
 
 
-router.delete('/deleteProduct', async (req, res) => {
+router.post('/deleteProduct', async (req, res) => {
     try {
 
         const productId = req.body.productId;
-
         var db = firebase.firestore();
         await db.collection('products').doc(productId).delete().then(response => {
             res.status(httpStatus.OK).json({ response: response, success: true })
