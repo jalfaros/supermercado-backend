@@ -63,7 +63,6 @@ router.get('/getMarketForId', async(req, res) => {
     try{
         const idMarket = req.query.idMarket;
         var db = firebase.firestore();
-        console.log(idMarket + ' el idMarket');
         const marketRef = db.collection('markets').doc(idMarket);
         const doc = await marketRef.get();
 
@@ -100,7 +99,7 @@ router.post('/addIdListProductsToMarket', async (req, res) => {
         const idList = req.body.idList;
         const idMarket = req.body.idMarket;
 
-        'falta buscar el mercado por el id del usuario'
+        console.log(idList, idMarket);
 
         var db = firebase.firestore();
 
@@ -119,6 +118,21 @@ router.post('/addIdListProductsToMarket', async (req, res) => {
 
     }
 });
+
+router.get('/getListMarketForId', async(req, res) => {
+    try{
+        const idList = req.query.idList;
+        var db = firebase.firestore();
+        const marketRef = db.collection('productsMarket').doc(idList);
+        const doc = await marketRef.get();
+
+        res.status(httpStatus.OK).json({ data: doc.data(), success: true });
+
+    }catch(error){
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({error , success: false });
+    }
+})
+
 
 
 module.exports = router;
