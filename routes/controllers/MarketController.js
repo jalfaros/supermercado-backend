@@ -20,6 +20,21 @@ async function cleanListMarket( marketId, listId ){
     }
 }
 
+async function cleanListProduct(  listId, productId ){
+    try{
+        console.log('ENNNNNNNNNNNTREEEEEEEEEEEEEEEEEEEEE', listId);
+        var db = firebase.firestore();
+        db.collection('productsMarket').doc( listId ).update({
+            products : firebase.firestore.FieldValue.arrayRemove( productId )
+        });
+        
+        return true; 
+        
+    }catch( err ){
+        return false;
+    }
+}
+
 router.get('/getMarkets', async (req, res) => {
 
     try {
@@ -202,7 +217,41 @@ router.post('/deleteProductList', async ( req, res ) => {
     }catch( err ){  
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error : err + ' ', success: false });
     }
-})
+});
+
+router.get('/getProductForId', async(req, res) => {
+    try{
+        const idProduct = req.query.idProduct;
+        var db = firebase.firestore();
+        const marketRef = db.collection('products').doc(idProduct);
+        const doc = await marketRef.get();
+
+        res.status(httpStatus.OK).json({ data: doc.data(), success: true });
+
+    }catch(error){
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({error , success: false });
+    }
+});
+
+
+
+router.post('/deleteProductInList', async ( req, res ) => {
+    
+    try{
+        const listId = req.body.listId;
+        const productId =  req.body.productId;
+
+        if( cleanListProduct( listId, productId ) ){
+            res.status( httpStatus.OK ).json({ success: true });
+        }else{
+            res.status( httpStatus.INTERNAL_SERVER_ERROR ).json({ error: 'Error', success: false });
+        }
+
+
+    }catch( err ){  
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error : err + ' ', success: false });
+    }
+});
 
 
 
