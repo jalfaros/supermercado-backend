@@ -72,7 +72,29 @@ router.post('/deleteProduct', async (req, res) => {
     } catch (err) {
         res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + ' ', success: false })
     }
-})
+});
+
+
+router.post('/addProductToList', async (req, res) => {
+
+    try {
+        const listId = req.body.listId;
+        const productList = req.body.productList;
+        var db = firebase.firestore();
+
+        productList.forEach( async product => {
+            await db.collection('productsMarket').doc(listId).update({
+                products: firebase.firestore.FieldValue.arrayUnion(product)
+            });
+        });
+
+        res.status(httpStatus.OK).json({ success: true })
+
+
+    } catch (err) {
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error: err + ' ', success: false })
+    }
+});
 
 
 
