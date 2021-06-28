@@ -88,6 +88,22 @@ router.get('/getMarketForId', async(req, res) => {
 })
 
 
+router.delete('/deleteMarketForId', async(req, res) => {
+    try{
+        const idMarket = req.query.idMarket;
+        var db = firebase.firestore();
+        
+        db.collection('markets').doc(idMarket).delete();
+        console.log('heree', idMarket);
+
+        res.status(httpStatus.OK).json({ success: true });
+
+    }catch(error){
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({error , success: false });
+    }
+})
+
+
 router.post('/newListProductsMarket', async (req, res) => {
     try{
         const listProductsName = req.body.listProductsName;
@@ -108,12 +124,11 @@ router.post('/newListProductsMarket', async (req, res) => {
     }
 });
 
+
 router.post('/addIdListProductsToMarket', async (req, res) => {
     try{
         const idList = req.body.idList;
         const idMarket = req.body.idMarket;
-
-        console.log(idList, idMarket);
 
         var db = firebase.firestore();
 
@@ -130,6 +145,25 @@ router.post('/addIdListProductsToMarket', async (req, res) => {
         
     }catch(error){
 
+    }
+});
+
+router.post('/editMarketForId', async (req, res) => {
+    try{
+        const idMarket = req.body.idMarket;
+        const name = req.body.name;
+        const desc = req.body.desc;
+
+        var db = firebase.firestore();
+
+        const cityRef = db.collection('markets').doc(idMarket);
+
+        await cityRef.update({supermarket_name: name, description: desc });
+
+        res.status(httpStatus.OK).json({ success: true });
+        
+    }catch(error){
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ error, success: false})
     }
 });
 
